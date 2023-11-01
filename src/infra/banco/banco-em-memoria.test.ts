@@ -1,8 +1,7 @@
 import {describe,test,expect} from 'vitest'
 import BancoEmMemoria from './banco-em-memoria'
-
 describe("Banco em memória",()=>{
-    test("Deve salvar o banco em memória",()=>{
+    test("Deve salvar no banco em memória",()=>{
         const input= {
             id:1,
             titulo:"test",
@@ -14,6 +13,5 @@ describe("Banco em memória",()=>{
         expect(result).toBe(true)
         expect(bancoEmMemoria.dados).toHaveLength(1)
         expect(bancoEmMemoria.dados).toEqual([input])
-
-       })
+    })
 })

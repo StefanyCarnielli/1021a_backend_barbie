@@ -3,27 +3,25 @@ class SalvaFilme{
     private banco = new BancoEmMemoria()
     constructor(){}
     public execute(input:Input):Output|undefined{
-        const {id,titulo,descricao,foto} = input 
-        // salvar no banco
+        const {id, titulo, descricao, foto} = input
+        //Salvar no Banco
         const resultado = this.banco.salvar({id,titulo,descricao,foto})
-     
-        // retornar
+        //Retornar o resultado
         if(!resultado) return undefined 
         return {id, titulo, descricao, foto}
-
     }
 }
 export default SalvaFilme
 
 type Input = {
     id:number,
-    titulo:string, 
+    titulo:string,
     descricao:string,
     foto:string
 }
 type Output = {
     id:number,
-    titulo:string, 
+    titulo:string,
     descricao:string,
     foto:string
 }

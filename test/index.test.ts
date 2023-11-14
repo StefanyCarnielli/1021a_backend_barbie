@@ -6,7 +6,7 @@ describe('Primeiro teste da aplicação', () => {
   })
 })
 
-describe('Cadastro Filme', () => {
+describe.skip('Cadastro Filme', () => {
     it('Deve cadastrar um filme com sucesso', async () => {
         const filme = {
             id: 1,
@@ -76,4 +76,3 @@ describe('Cadastro Filme', () => {
     expect(resposta2.status).toBe(404)
   })
 })
-

@@ -1,5 +1,6 @@
 import express, {Request} from 'express';
 
+// Cria uma instância do aplicativo Express
 const app = express();
 app.use(express.json())
 
@@ -11,11 +12,11 @@ type Filme = {
 }
 let filmes_repositorio:Filme[] = []
 
-app.get('/filmes/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    const filme = filmes_repositorio.find(filme => filme.id === id)
-    if (!filme) res.status(404).send()
-    res.send(filme)        
+
+// Define uma rota padrão
+app.get('/filmes', (req, res) => {
+   
+    res.send("Alguma coisa")        
 });
 
 app.post('/filmes', (req:Request, res) => {
@@ -39,6 +40,8 @@ app.delete('/filmes/:id', (req, res) => {
     res.status(200).send(filme)
 });
 
+
+// Inicia o servidor
 app.listen(3000, () => {
     console.log('Servidor iniciado na porta 3000');
 });

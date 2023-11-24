@@ -1,27 +1,33 @@
 import FilmeRepositorioInterface from "./filme-repositorio-interface"
-class SalvaFilme{
-    
-    constructor(private bancoInterface:FilmeRepositorioInterface){}
-    public async execute(input:Input):Promise<Output|undefined>{
-        const {id, titulo, descricao, foto} = input
-        //Salvar no Banco
-        const resultado = await this.bancoInterface.salvar({id,titulo,descricao,foto})
-        //Retornar o resultado
-        if(!resultado) return undefined 
-        return {id, titulo, descricao, foto}
+
+export default class SalvaFilme {
+    private repositorio:FilmeRepositorioInterface
+    constructor(repositorio:any) {
+        this.repositorio = repositorio
+    }
+    public async execute(input:Input):Promise<Output> {
+        const {id,titulo,descricao,imagem} = input
+        const result =  await this.repositorio.salvar({id,titulo,descricao,imagem})
+        const filmeSalvo = {
+            id:result.id,
+            titulo:result.titulo,
+            descricao:result.descricao,
+            imagem:result.imagem
+        }
+        return filmeSalvo
     }
 }
-export default SalvaFilme
 
 type Input = {
     id:number,
     titulo:string,
     descricao:string,
-    foto:string
+    imagem:string
 }
+
 type Output = {
     id:number,
     titulo:string,
     descricao:string,
-    foto:string
+    imagem:string
 }

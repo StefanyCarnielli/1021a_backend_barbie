@@ -1,40 +1,42 @@
-import {expect, describe, test} from 'vitest'
-import BancoEmMemoria from '../infra/banco/banco-em-memoria'
-import ListarFilme from './listar-filme.use-case'
-
-describe("Listar filme",()=>{
-    test("Deve listar filme",async ()=>{
-        const bancoEmMemoria = new BancoEmMemoria()
-        bancoEmMemoria.dados = [
+import { describe, expect, test, beforeEach } from "vitest";
+import ListaFilme from "./listar-filme.use-case";
+import BancoEmMemoria from "../infra/banco/banco-em-memoria";
+describe("ListaFilme", () => {
+    const bancoEmMemoria = new BancoEmMemoria();
+    beforeEach(async () => {
+        bancoEmMemoria.filmes = [
             {
-                id:1,
-                titulo:"test",
-                descricao:"test",
-                foto:"test",
+                id: 1,
+                titulo: "filme 1",
+                descricao: "Descrição do filme 1",
+                imagem: "imagem.jpg",
             },
             {
-                id:2,
-                titulo:"test",
-                descricao:"test",
-                foto:"test",
-            }
-        ]
-        const listarFilme = new ListarFilme(bancoEmMemoria)
-        const result = await listarFilme.execute()
-        expect(result.length).toBe(2)
-        expect(result[0].id).toBe(1)
-        expect(result[1].id).toBe(2)
-        expect(result[0]).toEqual({
-            id:1,
-            titulo:"test",
-            descricao:"test",
-            foto:"test",
-        })
-        expect(result[1]).toEqual({
-            id:2,
-            titulo:"test",
-            descricao:"test",
-            foto:"test",
-        })
+                id: 2,
+                titulo: "filme 2",
+                descricao: "Descrição do filme 2",
+                imagem: "imagem.jpg",
+            },
+        ];
     })
-})
+
+    test("deve retornar uma lista de filmes", async () => {
+        const listaFilme = new ListaFilme(bancoEmMemoria);
+        const filmes = await listaFilme.executar();
+        expect(filmes.length).toBe(2);
+        
+        expect(filmes[0].id).toBe(1);
+        expect(filmes[0]).toEqual({
+            id: 1,
+            titulo: "filme 1",
+            descricao: "Descrição do filme 1",
+            imagem: "imagem.jpg",
+            });
+            expect(filmes[1]).toEqual({
+                id: 2,
+                titulo: "filme 2",
+                descricao: "Descrição do filme 2",
+                imagem: "imagem.jpg",
+                });
+        })
+    });

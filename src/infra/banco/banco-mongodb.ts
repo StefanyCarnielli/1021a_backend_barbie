@@ -1,65 +1,60 @@
 import FilmeRepositorioInterface from "../../aplicacao/filme-repositorio-interface";
 import mongoose from 'mongoose'
-require('dotenv').config()
-export default class BancoMongoDB implements FilmeRepositorioInterface{
-    public filmeModel:any
-    constructor(){
-        try{
-            mongoose.connect(process.env.MONGODB_URL || '')
-            console.log("Conectado ao banco de dados")
-        }catch(erro){
-            console.log(erro)
-        }
-        this.filmeModel = 
-        mongoose.model('filme', new mongoose.Schema({
-                _id: Number,
-                titulo: String,
-                descricao: String,
-                foto: String
-            })
-        )
+require("dotenv").config();
+export default class BancoMongoDB implements  FilmeRepositorioInterface {
+  public filmeModelo: any;
+  constructor() {
+    try{
+      mongoose.connect(process.env.MONGODB_URL || "")
+    }catch(error){
+      console.log(error)
     }
-    public async salvar(filme:Filme): Promise<boolean> {
-        const filmeDTO = {
-            _id: filme.id,
-            titulo: filme.titulo,
-            descricao: filme.descricao,
-            foto: filme.foto
-        }
-        try{
-            const filmeModelo = new this.filmeModel({...filmeDTO})
-            const result = await filmeModelo.save()
-            return !!result
-        }catch(erro){
-            console.log(erro)
-            return false
-        }
-        
-    }
-    public async listar(): Promise<Filme[]> {
-        const filmes = await this.filmeModel.find({})
-        return filmes.map((filme:FilmeDTO)=>{
-            return {
-                id: filme._id,
-                titulo: filme.titulo,
-                descricao: filme.descricao,
-                foto: filme.foto
-            }
+    this.filmeModelo = mongoose.model("Filme", 
+        new mongoose.Schema({
+            _id: Number,
+            titulo: String,
+            descricao: String,
+            imagem: String
         })
+    )
+  }
+  async salvar(filme: Filme): Promise<Filme> {
+    const filmeDTO = {
+        _id: filme.id,
+        titulo: filme.titulo,
+        descricao: filme.descricao,
+        imagem: filme.imagem
+        }
+        const filmeModelo = new this.filmeModelo(filmeDTO)
+        const result = await filmeModelo.save()
+        const filmeSalvo = {
+            id: result._id,
+            titulo: result.titulo,
+            descricao: result.descricao,
+            imagem: result.imagem     
+        }
+        return filmeSalvo
     }
-    public desconectar(): void {
-        mongoose.disconnect()
-    }
+   
+  async listar(): Promise<Filme[]> {
+    const filmes = await this.filmeModelo.find({}, { _id: 1, titulo: 1, descricao: 1, imagem: 1 });
+    return filmes.map((filme: any) => ({
+        id: filme._id,
+        titulo: filme.titulo,
+        descricao: filme.descricao,
+        imagem: filme.imagem,
+    }));
+  }
+
+  async buscarPorId(id:number): Promise<Filme> {
+    return new Promise((resolve, reject) => {
+      reject(new Error("Not implemented yet"));
+    })
+  }
 }
 type Filme = {
-    id:number,
-    titulo:string,
-    descricao:string,
-    foto:string
-}
-type FilmeDTO = {
-    _id:number,
-    titulo:string,
-    descricao:string,
-    foto:string
-}
+  id: number,
+  titulo: string,
+  descricao: string,
+  imagem: string
+};
